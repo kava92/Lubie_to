@@ -208,4 +208,28 @@ class UserController extends Controller
         }
     }
 
+    public function getLocalization($city, $streetNumber, $street){
+
+        $cityArr = explode(' ', $city);
+        $city = '+'.implode('_', $cityArr);
+        $streetArr = explode(" ", $street);
+        $street = "+".implode("_", $streetArr);
+        $streetNumber = "+".$streetNumber;
+
+        $jsonContent = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?address=".$streetNumber.$street.$city.".&key=AIzaSyBXhtL_yLZra6mzoFA7P3thVJyAw7w4vmg");
+        $arrayJSON = json_decode($jsonContent, true);
+
+        if($arrayJSON['status'] == 'OK') {
+            $lat = $arrayJSON['results'][0]['geometry']['location']['lat'];
+            $lng = $arrayJSON['results'][0]['geometry']['location']['lng'];
+            $arrayGeo = [$lat, $lng];
+
+            return $arrayGeo;
+        }
+        if($arrayJSON['status'] == 'ZERO_RESULTS'){
+            $arrayGeo = [0,0];
+            return $arrayGeo;
+        }
+    }
+
 }

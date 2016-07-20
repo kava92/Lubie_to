@@ -31,20 +31,28 @@
 
 {% block middle %}
 
-   {# <div id="map"></div>
+   <div id="map" class="center-block"></div>
     <script>
         function initMap() {
             var mapDiv = document.getElementById('map');
+            var myLatLng = {lat: {{ user.latitude }}, lng: {{ user.longitude}}};
+
             var map = new google.maps.Map(mapDiv, {
-                center: {lat: {{ user.latitude }}, lng: {{ user.longitude}}},
-                zoom: 8
+                center: myLatLng,
+                zoom: 16
+            });
+
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: "{{ user.street }} {{ user.streetNumber }}\n{{ user.postcode }} {{ user.city }}"
             });
         
         }
     </script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBXhtL_yLZra6mzoFA7P3thVJyAw7w4vmg&callback=initMap">
-    </script>#}
+    </script>
 
     <h3 class="text-center">Moje grupy</h3>
     <div class="list-group">
